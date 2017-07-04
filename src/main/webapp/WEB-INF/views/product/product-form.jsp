@@ -1,43 +1,49 @@
 <%@ include file="../header.jsp" %>
 
-<c:url value='/products' var="url"/>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-	<div class="container col-sm-5">
-		<h1>Cadastro produto</h1>
+<div class="container col-sm-5">
+	<h1>Cadastro produto</h1>
+	
+	<form:form action='${spring:mvcUrl("createProduct").build()}' commandName="product" method="post" cssClass="form-group">
+		<div class="form-group">
+			<label for="title">Título</label>
+			<form:input path="title" cssClass="form-control"/>
+			<form:errors path="title" />
+		</div>
+		<div class="form-group">
+			<label for="description">Descrição</label>
+			<form:textarea path="description" cssClass="form-control" cols="20" rows="10"/>
+			<form:errors path="description" />
+		</div>
+		<div class="form-group">
+			<label for="numberOfPages">Número de páginas</label>
+			<form:input path="numberOfPages" cssClass="form-control"/>
+			<form:errors path="numberOfPages" />
+		</div>
 		
-		<form method="post" action='${url}' class="form-group">
-			<div class="form-group">
-				<label for="title">Título</label>
-				<input type="text" name="title" id="title" class="form-control"/>
-			</div>
-			<div class="form-group">
-				<label for="description">Descrição</label>
-				<textarea rows="10" cols="20" type="text" name="description" id="description" class="form-control">
-				</textarea>
-			</div>
-			<div class="form-group">
-				<label for="numberOfPages">Número de páginas</label>
-				<input type="text" name="numberOfPages" id="numberOfPages" class="form-control"/>
-			</div>
-			
-			<h3>Preço por formato</h3>
-			<c:forEach items="${types}" var="bookType" varStatus="status">
-				<div class="row">
-					<div class="input-group col-2">
-						
-						<label for="price_${bookType}" class="col-form-label">${bookType}</label>
-					</div>
-					<div class="input-group col-4">
-						<span class="input-group-addon">R$</span>
-						<input type="text" name="prices[${status.index}].value" id="price_${bookType}" class="form-control"/>
-						<input type="hidden" name="prices[${status.index}].bookType" value="${bookType}" />
-					</div>
+		<h3>Preço por formato</h3>
+		<c:forEach items="${types}" var="bookType" varStatus="status">
+			<div class="row">
+				<div class="input-group col-2">
+					
+					<label for="price_${bookType}" class="col-form-label">${bookType}</label>
 				</div>
-			</c:forEach>
-			
-			<button type="submit" value="enviar" class="btn btn-primary">Criar</button>
-		</form>
-	</div>
+				<div class="input-group col-4">
+					<span class="input-group-addon">R$</span>
+					<form:input path="prices[${status.index}].value" cssClass="form-control"/>
+					<form:input path="prices[${status.index}].bookType" cssStyle="display: none;"/>
+					<!-- 
+					<input type="hidden" name="prices[${status.index}].bookType" value="${bookType}" />
+					-->
+				</div>
+			</div>
+		</c:forEach>
+		
+		<button type="submit" value="enviar" class="btn btn-primary">Criar</button>
+	</form:form>
+</div>
 	
 
 <%@ include file="../footer.jsp" %>
