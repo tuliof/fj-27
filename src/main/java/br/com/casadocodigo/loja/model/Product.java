@@ -3,6 +3,7 @@ package br.com.casadocodigo.loja.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Product {
 	@Lob
 	protected String description;
 	protected int numberOfPages;
+	@ElementCollection
 	protected List<Price> prices = new ArrayList<>();
 	
 	/**

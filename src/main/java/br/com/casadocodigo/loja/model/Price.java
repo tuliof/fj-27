@@ -3,9 +3,11 @@ package br.com.casadocodigo.loja.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+@Embeddable
 public class Price {
 	@Column(scale = 2)
 	protected BigDecimal value;
