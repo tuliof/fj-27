@@ -56,9 +56,10 @@ public class ProductController {
 		model.addAttribute("products", productDao.getAll());
 		return "product/list";
 	}
-	
+	/* Não é mais necessário, agora estamos usando Hibernate Bean Validation
 	@InitBinder
 	public void initinder(WebDataBinder binder) {
 		binder.addValidators(new ProductValidator());
 	}
+	*/
 }
