@@ -33,6 +33,7 @@ public class Product {
 	protected List<Price> prices = new ArrayList<>();
 	@DateTimeFormat(iso = ISO.DATE)
 	protected Calendar releaseDate;
+	protected String summaryPath;
 
 	/**
 	 * @return the title
@@ -122,5 +123,20 @@ public class Product {
 	 */
 	public void setReleaseDate(Calendar releaseDate) {
 		this.releaseDate = releaseDate;
+	}
+
+	/**
+	 * @return the summaryPath
+	 */
+	public String getSummaryPath() {
+		return summaryPath;
+	}
+
+	/**
+	 * @param summaryPath
+	 *            the summaryPath to set
+	 */
+	public void setSummaryPath(String summaryPath) {
+		this.summaryPath = summaryPath;
 	}
 }

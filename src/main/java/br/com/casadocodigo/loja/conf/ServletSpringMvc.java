@@ -5,6 +5,8 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import br.com.casadocodigo.loja.helper.FileSaver;
+
 public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -15,7 +17,7 @@ public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletI
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] { AppWebConfiguration.class, JpaConfiguration.class };
+		return new Class[] { AppWebConfiguration.class, JpaConfiguration.class, FileSaver.class };
 	}
 
 	@Override

@@ -35,8 +35,9 @@
 			<form:errors path="releaseDate" />
 		</div>
 		<div class="form-group">
-			<label for="sumario">Upload de sumário</label>
-			<input type="file" name="sumario" id="sumario" class="form-control"/>
+			<label for="summary">Upload de sumário</label>
+			<input type="file" name="summary" id="summary" class="form-control"/>
+			<form:errors path="summaryPath" />
 		</div>
 		
 		<h3>Preço por formato</h3>
