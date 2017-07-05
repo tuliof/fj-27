@@ -62,7 +62,7 @@ public class ProductController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, name = "showProduct")
 	public ModelAndView show(@PathVariable Integer id) {
 		ModelAndView view = new ModelAndView("product/show");
-		Product product = productDao.getById(id);
+		Product product = productDao.findById(id);
 		view.addObject("product", product);
 		return view;
 	}
@@ -70,14 +70,14 @@ public class ProductController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable Integer id) {
 
-		Product p = productDao.getById(id);
+		Product p = productDao.findById(id);
 
 		return "redirect:/products";
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		model.addAttribute("products", productDao.getAll());
+		model.addAttribute("products", productDao.findAll());
 		return "product/list";
 	}
 	/*

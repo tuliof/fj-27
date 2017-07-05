@@ -19,12 +19,12 @@ public class ProductDao {
 		manager.persist(product);
 	}
 
-	public List<Product> getAll() {
+	public List<Product> findAll() {
 		return manager.createQuery("select distinct(p) from Product p join fetch p.prices", Product.class)
 				.getResultList();
 	}
 
-	public Product getById(Integer id) {
+	public Product findById(Integer id) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct(p) ");
 		sb.append("from Product p join fetch p.prices ");
@@ -36,7 +36,7 @@ public class ProductDao {
 	}
 
 	public void delete(Integer id) {
-		Product p = getById(id);
+		Product p = findById(id);
 		manager.remove(p);
 	}
 }

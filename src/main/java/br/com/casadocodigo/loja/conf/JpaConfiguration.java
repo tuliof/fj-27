@@ -23,35 +23,37 @@ public class JpaConfiguration {
 		dataSource.setUrl("jdbc:mysql://localhost:3306/casadocodigo");
 		dataSource.setUsername("root");
 		dataSource.setPassword("caelum");
-		
+
 		return dataSource;
 	}
-	
+
 	@Bean
 	/**
-	 * A classe LocalContainerEntityManagerFactoryBean é a abstração do persistance.xml!
+	 * A classe LocalContainerEntityManagerFactoryBean é a abstração do
+	 * persistance.xml!
+	 * 
 	 * @param ds
 	 * @return
 	 */
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(ds);
-		em.setPackagesToScan("br.com.casadocodigo.loja.model");
+		em.setPackagesToScan("br.com.casadocodigo.loja.models");
 		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		em.setJpaProperties(additionalProperties());
-		
+
 		return em;
 	}
-	
+
 	private Properties additionalProperties() {
 		Properties props = new Properties();
 		props.setProperty("hibernate.hbm2ddl.auto", "update");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		props.setProperty("hibernate.show_sql", "true");
-		
+
 		return props;
 	}
-	
+
 	@Bean
 	public PlatformTransactionManager getTransactionManager(EntityManagerFactory managerFactory) {
 		return new JpaTransactionManager(managerFactory);
