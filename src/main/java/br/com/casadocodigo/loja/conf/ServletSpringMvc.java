@@ -1,5 +1,8 @@
 package br.com.casadocodigo.loja.conf;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -12,12 +15,18 @@ public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletI
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] {AppWebConfiguration.class, JpaConfiguration.class};
+		return new Class[] { AppWebConfiguration.class, JpaConfiguration.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] {"/"};
+		return new String[] { "/" };
+	}
+
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		super.customizeRegistration(registration);
+		registration.setMultipartConfig(new MultipartConfigElement(""));
 	}
 
 }
