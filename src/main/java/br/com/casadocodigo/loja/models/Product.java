@@ -142,12 +142,6 @@ public class Product {
 	}
 
 	public BigDecimal priceFor(BookType bookType) {
-		for (Price price : this.prices) {
-			if (price.bookType.equals(bookType)) {
-				return price.value;
-			}
-		}
-
-		return new BigDecimal(0);
+		return prices.stream().filter(p -> p.bookType.equals(bookType)).findFirst().get().getValue();
 	}
 }
