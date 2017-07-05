@@ -1,4 +1,4 @@
-package br.com.casadocodigo.loja.model;
+package br.com.casadocodigo.loja.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
