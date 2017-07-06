@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.AntPathRequestMatcher;
 
 import br.com.casadocodigo.loja.daos.UserDao;
 
@@ -26,12 +27,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		// suporta login por form e openId
 		http.authorizeRequests()
+		// Auth
 		.antMatchers("/products/form").hasRole("ADMIN")
 		.antMatchers("/shopping/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
 		.antMatchers("/products**/**").permitAll()
 		.anyRequest().authenticated()
-		.and().formLogin();
+		
+		// Login
+		.and().formLogin()//.loginPage("/login").permitAll().defaultSuccessUrl("/products")
+		
+		// Logout
+		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.permitAll().logoutSuccessUrl("/login")
+		
+		// 403
+		.and()
+		.exceptionHandling()
+		.accessDeniedPage("/WEB-INF/views/error/403.jsp");
 	}
 	
 	@Override
