@@ -1,6 +1,7 @@
 package br.com.casadocodigo.loja.controllers;
 
 import java.math.BigDecimal;
+import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,20 +50,33 @@ public class ShoppingCartController {
 	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String checkout(RedirectAttributes attributes) {
-		BigDecimal valor = shoppingCart.getTotal();
-		String uri = "http://book-payment.herokuapp.com/payment";
+	public Callable<String> checkout(RedirectAttributes attributes) {
 
-		String paymentMessage = "";
-		try {
-			paymentMessage = rest.postForObject(uri, new PaymentData(valor), String.class);
-		} catch (HttpClientErrorException ex) {
-			paymentMessage = "Erro no pagamento.";
-			return "redirect:/shipping";
-		}
+		// Além de Callable também existe DeferredResult
+		// Dar uma olhada em DeferredResult
 
-		attributes.addFlashAttribute("paymentMessage", paymentMessage);
+		// Equivalente a fazer new Callable<String>() { implementação de
+		// call()...}
+		// Interfaces que tem apenas um método são chamados de "Functional
+		// interfaces"
+		// Podem ser implementadas usando lambda. O tipo é inferido pelo retorno
+		// do método nesse caso
+		return () -> {
 
-		return "redirect:/product";
+			BigDecimal valor = shoppingCart.getTotal();
+			String uri = "http://book-payment.herokuapp.com/payment";
+
+			String paymentMessage = "";
+			try {
+				paymentMessage = rest.postForObject(uri, new PaymentData(valor), String.class);
+			} catch (HttpClientErrorException ex) {
+				paymentMessage = "Erro no pagamento.";
+				return "redirect:/shipping";
+			}
+
+			attributes.addFlashAttribute("paymentMessage", paymentMessage);
+
+			return "redirect:/products";
+		};
 	}
 }

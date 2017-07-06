@@ -4,6 +4,10 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +31,8 @@ public class ProductController {
 	private ProductDao productDao;
 	@Autowired
 	private FileSaver fileSaver;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public String form(Product product, Model model) {
@@ -56,6 +62,11 @@ public class ProductController {
 		System.out.println("Creating a product: " + product.getTitle());
 		productDao.save(product);
 		redirectAttributes.addFlashAttribute("message", "Product added.");
+
+		// Invalidate cache manually
+		Cache cache = this.cacheManager.getCache("products");
+		cache.clear();
+
 		return "redirect:/products";
 	}
 
@@ -67,6 +78,7 @@ public class ProductController {
 		return view;
 	}
 
+	@CacheEvict(value = { "lastProducts" })
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable Integer id) {
 
@@ -75,10 +87,15 @@ public class ProductController {
 		return "redirect:/products";
 	}
 
+	@Cacheable("lastProducts")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model model) {
-		model.addAttribute("products", productDao.findAll());
-		return "product/list";
+	public ModelAndView list(Model model) {
+
+		System.out.println(this.cacheManager.getCacheNames());
+
+		ModelAndView view = new ModelAndView("product/list");
+		view.addObject("products", productDao.findAll());
+		return view;
 	}
 	/*
 	 * Não é mais necessário, agora estamos usando Hibernate Bean Validation
