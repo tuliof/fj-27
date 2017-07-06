@@ -11,6 +11,7 @@ public class XMLViewResolver implements ViewResolver {
 	@Override
 	public View resolveViewName(String viewName, Locale locale) throws Exception {
 		MappingJackson2XmlView xmlView = new MappingJackson2XmlView();
+		// Doesn't work by default, needs another dependency
 		// xmlView.setPrettyPrint(true);
 		return xmlView;
 	}
