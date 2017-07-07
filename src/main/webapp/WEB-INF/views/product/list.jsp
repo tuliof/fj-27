@@ -1,9 +1,20 @@
 <%@ include file="../header.jsp" %>
 
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <div class="container col-sm-5">
 	<h1>Lista de produtos</h1>
+	
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="user"/>
+		<p>Olá ${user.username}</p>
+	</sec:authorize>
+	
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<p>Visão de ADM</p>
+	</sec:authorize>
+	
 	
 	<table>
 		<tr>

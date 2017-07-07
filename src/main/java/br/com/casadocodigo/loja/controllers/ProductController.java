@@ -8,6 +8,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import br.com.casadocodigo.loja.daos.ProductDao;
 import br.com.casadocodigo.loja.helper.FileSaver;
 import br.com.casadocodigo.loja.models.BookType;
 import br.com.casadocodigo.loja.models.Product;
+import br.com.casadocodigo.loja.models.User;
 
 @Controller
 @RequestMapping("/products")
@@ -89,8 +91,9 @@ public class ProductController {
 
 	@Cacheable("lastProducts")
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@AuthenticationPrincipal User user) {
 
+		System.out.println("User: " + user.toString());
 		System.out.println(this.cacheManager.getCacheNames());
 
 		ModelAndView view = new ModelAndView("product/list");

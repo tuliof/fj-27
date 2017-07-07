@@ -196,13 +196,13 @@ public class User implements UserDetails, CredentialsContainer {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append(": ");
-        sb.append("Username: ").append(this.username).append("; ");
-        sb.append("Password: [PROTECTED]; ");
-        sb.append("Email: ").append(this.email).append("; ");
-        sb.append("Enabled: ").append(this.enabled).append("; ");
-        sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
-        sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired).append("; ");
-        sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
+        sb.append("\nUsername: ").append(this.username).append("; ");
+        sb.append("\nPassword: [PROTECTED]; ");
+        sb.append("\nEmail: ").append(this.email).append("; ");
+        sb.append("\nEnabled: ").append(this.enabled).append("; ");
+        sb.append("\nAccountNonExpired: ").append(this.accountNonExpired).append("; ");
+        sb.append("\ncredentialsNonExpired: ").append(this.credentialsNonExpired).append("; ");
+        sb.append("\nAccountNonLocked: ").append(this.accountNonLocked).append("; ");
 
         if (!authorities.isEmpty()) {
             sb.append("Granted Authorities: ");
