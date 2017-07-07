@@ -89,7 +89,7 @@ public class ProductController {
 
 	@Cacheable("lastProducts")
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView list(Model model) {
+	public ModelAndView list() {
 
 		System.out.println(this.cacheManager.getCacheNames());
 

@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,7 +54,7 @@
 				<a href="http://www.casadocodigo.com.br">Home</a>
 			</li>
 			<li class="category">
-				<a href="/collections/livros-de-agile">Agile</a>
+				<a href="/collections/livros-de-agile"><spring:message code="nav.categoria.agilidade" /></a>
 			</li>
 			<li class="category">
 				<a href="/collections/livros-de-front-end">Front End</a>
@@ -62,7 +63,7 @@
 				<a href="/collections/livros-de-games">Games</a>
 			</li>
 			<li class="category">
-				<a href="/collections/livros-de-java">Java</a>
+				<a href="/collections/livros-de-java"><spring:message code="nav.categoria.java" arguments="${user.name }" /></a>
 			</li>
 			<li class="category">
 				<a href="/collections/livros-de-mobile">Mobile</a>
@@ -105,8 +106,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="2">
-						<c:url value="/shopping/checkout" var="checkoutUrl"/>
-						<form:form action="${checkoutUrl}" method="post">
+						<form:form servletRelativeAction="/shopping/checkout" method="post">
 							<input type="submit" class="checkout" name="checkout" value="Finalizar compra" id="checkout" />
 						</form:form>
 					</td>
