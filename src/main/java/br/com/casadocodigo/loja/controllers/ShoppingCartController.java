@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.casadocodigo.loja.daos.ProductDao;
+import br.com.casadocodigo.loja.daos.ProductDAO;
 import br.com.casadocodigo.loja.models.BookType;
 import br.com.casadocodigo.loja.models.PaymentData;
 import br.com.casadocodigo.loja.models.Product;
@@ -24,7 +24,7 @@ import br.com.casadocodigo.loja.models.ShoppingItem;
 public class ShoppingCartController {
 
 	@Autowired
-	private ProductDao productDao;
+	private ProductDAO productDao;
 	@Autowired
 	private ShoppingCart shoppingCart;
 	@Autowired

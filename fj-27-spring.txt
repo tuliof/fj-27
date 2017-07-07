@@ -215,7 +215,18 @@ Para rodar a aplicação e selecionar o profile:
 > java -jar app.jar -Dspring.profiles.active=dev
 
 Para rodar no Eclipse:
- - Altere o run configurations, na aba do tomcat passe o "-Dspring.profiles.active=dev" como um dos parametros
+ - Altere o run configurations, na aba arguments do tomcat, em "Program arguments" passe o "-Dspring.profiles.active=dev" como um dos parametros
+
+Uma forma de fazer com que o contexto do Spring inicie com um profile selecionado por padrão, é setar ele no 
+onStartup da classe que herda de AbstractAnnotationConfigDispatcherServletInitializer.
+
+> servletContext.addListener(RequestContextListener.class);
+> servletContext.setInitParameter("spring.profiles.active", "dev");
+
+Uma forma de não ficar fixo é pegar o active profile de uma variável de ambiente
+
+> servletContext.setInitParameter("spring.profiles.active", System.getenv("myapp.spring.profiles.active"));
+      
 
 ### 15.Facilitando a vida com Spring Boot
 ### 16.Spring Data para facilitar os dados

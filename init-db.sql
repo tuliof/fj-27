@@ -1,3 +1,8 @@
+create database casadocodigo;
+create database casadocodigo_test;
+
+use casadocodigo;
+
 insert into Role values('ROLE_ADMIN');
 insert into Role values('ROLE_COMPRADOR');
 

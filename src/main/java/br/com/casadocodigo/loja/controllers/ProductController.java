@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.casadocodigo.loja.daos.ProductDao;
+import br.com.casadocodigo.loja.daos.ProductDAO;
 import br.com.casadocodigo.loja.helper.FileSaver;
 import br.com.casadocodigo.loja.models.BookType;
 import br.com.casadocodigo.loja.models.Product;
@@ -30,7 +30,7 @@ import br.com.casadocodigo.loja.models.User;
 public class ProductController {
 
 	@Autowired
-	private ProductDao productDao;
+	private ProductDAO productDao;
 	@Autowired
 	private FileSaver fileSaver;
 	@Autowired
