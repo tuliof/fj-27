@@ -1,0 +1,223 @@
+# FJ-27 - Spring Framework
+
+03/07/2017 - 07/07/2017
+
+Com o instrutor Rafael Rollo
+email: rafael.rollo@caelum.com.br
+Sala 55
+
+## Ementa
+
+1. Introdução
+2. Começando o projeto
+3. Cadastro de produtos
+4. Melhorando o cadastro e a listagem
+5. Validação e conversão de dados
+6. Upload de arquivos
+7. Carrinho de compras
+8. Retornos assíncronos
+9. Melhorando performance com cache
+10.Respondendo mais de um formato
+11.Protegendo a aplicação
+12.Organização do layout em templates
+13.I18n
+14.Testes automatizados
+15.Facilitando a vida com Spring Boot
+16.Spring Data para facilitar os dados
+17.Outras funcionalidades
+18.Deploy da aplicação
+
+## Dia 1 (03/07)
+
+Rafael se apresentou e pediu para que todos se apresentassem.
+
+###1. Introdução
+
+Intro de como o java servlets funciona.
+	- HttpServlet
+	- web.xml
+	- @WebServlet("/uri")
+
+__Começando a implantar o Spring no java servlets__
+
+ - O web.xml vai ser usado pra apontar para a implementção de servlet do Spring, DispatcherServlet.
+ - O spring-context.xml precisa ser carregado, ele é indicado pelo web.xml.
+ - O DispatcherServlet recebe a requisição e chama o controller feito e mapeado(por annotation(@Controller) ou xml) por você.
+
+> DispatcherServlet -> MyController.java(@Controller) -> @RequestMapping("/hello")hello() -> hello.jsp
+
+Seu método do controller retorna uma string com o endereço da .jsp como "/WEB-INF/view/hello.jsp"
+
+__Mapeamento programático__
+
+Para configurar você extende a classe AbstractAnnotationConfigDispatcherServletInitializar, ela é usada para configurar o framework, os mapeamentos das servlets/uri.
+
+Ex.: ServletSpringMvcConfig extends AbstractAnnotationConfigDispatcherServletInitializar
+
+Na nossa ServletSpringMvcConfig você diz quais classes serão usadas para configuração e mapeamento de classe. Essa classe substitui a declaração dos <beans> do spring.xml.
+
+ServletSpringMvcConfig -> WebAppConfig
+
+A WebAppConfig pode receber annotations como @ComponentScan e @ @EnableWebMvc
+
+2. Começando o projeto
+Projeto casadocodigo configurado no eclipse.
+
+Exercícios: 2.2 até 2.6
+
+3. Cadastro de produtos
+Criamos o cadastro de produto.
+
+Rafael explicou o funcionamento do form e do recebimento do model no controller.
+
+Exercícios: 3.1 e 3.2
+
+Rafael apresentou como o DataSource, EntityManagerFactory e Hibernate se integram.
+
+Existem várias formas de não deixar as configurações hard coded
+ - Se deixar hard coded pode-se usar o @Profile
+ - O Spring tem uma classe Environment(alguma coisa) que lê variáves de ambiente
+ - Configuração por JNDI
+
+@Transactional vai no método do controller em casos simples, do contrário crie uma outra classe anotada como @Service que contém toda a lógica de negócio e faz a chamada pro DAO.
+
+              @Component
+           /       |      \
+  @Controller   @Service  @Repository
+
+Exercícios: 3.6 e 3.8
+
+## Dia 2 (04/07)
+
+Retomamos o trabalho no formulário de produtos
+
+### 4. Melhorando o cadastro e a listagem
+
+ - Rafael explicou como a anotação @Embeddable funciona, como acessamos as propriedades da classe Preco que foram integradas na classe Produto e como podem ser acessadas no JSP usando JSTL forEach.
+ - Explicando como passar dados para a página através da Model e ModelAndView. Até agora o método da controller só retornava uma string com o nome do JSP sem path e sem extensão.
+   - A Model fica disponível pro container, se declarada na assinatura do método na controller, o Spring injeta uma instâncias. Você pode adicionar items chave/valor e não precisa fazer seu método retornar pelo método, só setar e o Spring cuida do resto. Model é melhor para testes, pois como é recebido como parâmetro, pode ser mockado.
+   - A ModelAndView não fica disponível, você precisa criar uma instância para usá-la e também precisa setar no construtor a página que será retornada. Ela igual a Model
+   `ModelAndView mv = new ModelAndView("products-form");`
+
+Exercício: 4.3 (pg. 38)
+
+__Como fazer redirect__
+ - Rafael explicou as formas de redirecionar para uma outra página.
+ 	- Por retorno do controller como "forward:/products/list"
+ 		 - Não muda a url, no fluxo save->list, o navegador mostraria a pagina de list mas ainda com a url de save
+ 		 - se for dado f5, ele vai refazer o post
+ 		 - o uso é válido quando validando um form, se precisar retornar erro, use forward ao invés de redirect. O redirect vai recarregar a página e fazer com que os dados do form sejam perdidos.
+ 	- Por retorno do controller como "redirect:/products/list"
+ 		- Como o navegador recebeu o 302 e requistou uma nova pagina, 
+ 
+Mandamento para evitar reenvio do post: __"Always redirect after post"__
+
+O __redirect__ envia um 302 para o navegador, isso faz com que o navegador faça uma outra requisição para pedir a página setada no redirect.
+
+__Como passar dados entre uma requisição e outra__
+
+No caso de um "redirect:", você pode passar informações pra nova view. Quando um método fizer "redirect:", receba como parâmetro o RedirectAttributes(addFlashAttribute), ele funciona como um Model mas que dura por mais de uma requisição.
+
+Exercício: 4.7 e 4.10 (pg. 42)
+
+### 5. Validação e conversão de dados
+
+__Fazendo a validação do form__
+
+1. Criar classe que extende o Spring Validator
+	- O ValidationUtils ajuda a fazer a validação
+	- Pode-se rejeitar campos específicos com `errors.rejectValue(value)` ou tudo com `errors.reject()`
+2. Criar método na controller para fazer o bind do validator
+3. Adicionar a tag @Valid junto com o model na assinatura do seu método na controler, e receba o BindingResult LOGO EM SEGUIDA. Se houver algum parametro entre o model com @Valid e o BindingResult, o Spring vai lançar erro.
+> HTTP 400 - The request sent by the client was syntactically incorrect.
+
+Exercícios: 5.6 e 5.8
+
+## Dia 3 (05/07)
+
+Finalizamos o quinto capítulo, fazendo a parte de conversão de String para Calendar. Configuramos o FormattingConversionService na classe AppWebConfiguration.
+
+### 6. Upload de arquivos
+
+### 7. Carrinho de compras
+
+Como o carrinho de compras é expecífico da sessão do usuário, apenas o @Component não basta, para a classe ter o ciclo de vida por sessão ela deve ser marcada com @Scope(value=WebApplicationContext.SCOPE_SESSION, proxyMode=ScopedProxyMode.TARGET_CLASS)
+
+
+## Dia 4 (06/07)
+
+### 8. Retornos assíncronos
+
+Retornar um Callable<T> do método da controller.
+Para ter um controle maior sobre a thread, você pode retornar , 
+
+### 9. Melhorando performance com cache
+
+Adicionar o bean CacheManager ao contexto.
+Anotar a AppWebConfiguration como @EnableCaching
+
+No controller, anotar o método pra ser cacheado como @Cacheable("chavePraIdentificarEsseRecursoNoCache")
+
+Nota imporatante: 
+ - O seu método na controle tem que retornar ModelAndView para que o cache funcione.
+ - Se o método receber Model como parâmetro, por algum motivo o cache não funciona. Verificar o por que disso.
+
+Exercícios: 9.2, 9.4 e 9.6
+
+### 10.Respondendo mais de um formato
+
+Formas de especificar como o controller vai retornar:
+ - Especificar na request o header ACCEPT que pode ser application/json - application/xml - text/html.
+ - O Spring faz automatigicamente pela url, você pode chamar o endpoint e concatenar ".html", ".json" ou ".xml"
+ Ex.: "/casadocodigo/produtos.json"
+
+### 11.Protegendo a aplicação
+
+Exercícios: 11.2, 11.4 e 11.6
+
+Você pode customizar o fluxo de login extendendo o filtro UsernamePasswordAuthenticationFilter para adicionar um captcha ou 2-step.
+
+### 12.Organização do layout em templates
+
+### 13.I18n
+
+Rafael explicou o uso dos arquivos messages_pt_BR.properties
+
+Exercícios: 13.2, 13.4, 13.6 e 13.8
+
+### 14.Testes automatizados
+
+Como fica o ModelAndView necessário para o @Cacheable no contexto de testes?
+R. O @Cacheable pode ser aplicado não apenas na camada da Controller, pode ser direto na DAO ou numa camada de serviço.
+Imagine mover a lógica da controller para um service e anotar o service com @Cacheable, dessa forma talvez, você pudesse
+usar o Model na controller.
+
+__Inicializando o contexto do Spring__
+
+Quando a aplicação roda no Tomcat(Ou a sua escolha de container de aplicação), o Request Dispatcher do container inicia o Spring, que por sua vez faz o scan no classpath, instancia os beans e por aí vai.
+
+No caso de testes, que teria a responsabilidade de dar iniciar o Spring seria o próprio JUnit. Das seguinte formas:
+
+1. 
+
+__Uso do @profile para dizer ao Spring qual bean(no caso de ambiguidade) será instanciado__
+
+Imagine que você tem dois bean DataSource, um para dev e outro prod. Para isso usamos Profiles.
+Anote as suas classes de configuração que serão usadas em dev com @Profile("dev"), nos seus testes unitários,
+anote a classe de teste com @ActiveProfile("dev") e os beans anotados com dev terão preferência;
+
+Profiles usados normalmente são:
+ - @Profile("test")
+ - @Profile("dev")
+ - @Profile("prod")
+
+Para rodar a aplicação e selecionar o profile:
+> java -jar app.jar -Dspring.profiles.active=dev
+
+Para rodar no Eclipse:
+ - Altere o run configurations, na aba do tomcat passe o "-Dspring.profiles.active=dev" como um dos parametros
+
+### 15.Facilitando a vida com Spring Boot
+### 16.Spring Data para facilitar os dados
+### 17.Outras funcionalidades
+### 18.Deploy da aplicação
