@@ -196,9 +196,17 @@ __Inicializando o contexto do Spring__
 
 Quando a aplicação roda no Tomcat(Ou a sua escolha de container de aplicação), o Request Dispatcher do container inicia o Spring, que por sua vez faz o scan no classpath, instancia os beans e por aí vai.
 
-No caso de testes, que teria a responsabilidade de dar iniciar o Spring seria o próprio JUnit. Das seguinte formas:
+No caso de testes, que teria a responsabilidade de dar iniciar o Spring seria o próprio JUnit. 
+Pode ser iniciado manualmente como por annotations
 
-1. 
+ - Manual:
+Forma manual de iniciar o context do spring e pegar a instância de um bean de dentro do contexto.
+
+> AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProductDao.class,JpaConfiguration.class);
+> ProductDao dao = context.getBean(ProductDao.class);
+
+ - Annotation:
+
 
 __Uso do @profile para dizer ao Spring qual bean(no caso de ambiguidade) será instanciado__
 
