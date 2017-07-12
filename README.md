@@ -1,2 +1,1 @@
-# fj-27
-Caelum Spring course
+# FJ-27 Caelum Spring course
