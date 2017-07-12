@@ -31,8 +31,8 @@ public class ProductDAOTest {
 	@Autowired
 	private ProductDAO productDao;
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldSumAllPricesOfEachBookPerType() {
 		
 		/*
